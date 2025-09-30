@@ -1,0 +1,870 @@
+/* ========================================
+   CSS Variables & Root Styles
+   ======================================== */
+:root {
+  --primary-gradient: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #8b5cf6 50%,
+    #d946ef 100%
+  );
+  --secondary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --accent-gradient: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+  --card-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+  --hover-shadow: 0 25px 60px rgba(99, 102, 241, 0.25);
+  --primary-color: #6366f1;
+  --secondary-color: #8b5cf6;
+  --accent-color: #d946ef;
+  --text-dark: #1e293b;
+  --text-medium: #475569;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+  --bg-light: #f8fafc;
+  --bg-gray: #f1f5f9;
+  --white: #ffffff;
+  --success: #10b981;
+  --error: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========================================
+   Base Body Styles
+   ======================================== */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  background: var(--bg-gray);
+}
+
+/* Animated gradient background for auth pages */
+body.auth-page {
+  background: linear-gradient(-45deg, #6366f1, #8b5cf6, #d946ef, #3b82f6);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h4 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+p {
+  margin: 0 0 0.5rem;
+}
+
+/* ========================================
+   Container & Layout
+   ======================================== */
+.container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ========================================
+   Card Components
+   ======================================== */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card:hover {
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+}
+
+.card.p-4 {
+  padding: 1.5rem;
+}
+
+/* Enhanced card for profile */
+.profile-card {
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.profile-card:hover {
+  box-shadow: var(--hover-shadow);
+  transform: translateY(-8px);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* ========================================
+   Auth Pages Layout (Login & Signup)
+   ======================================== */
+.login-wrapper,
+.signup-wrapper {
+  max-width: 1000px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Login Left Panel (Gradient Side) */
+.login-left,
+.signup-right {
+  background: var(--primary-gradient);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated decorative elements */
+.login-left::before,
+.signup-right::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  top: -150px;
+  left: -100px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.login-left::after,
+.signup-right::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  bottom: -100px;
+  right: -80px;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, 30px) scale(1.05);
+  }
+}
+
+/* Welcome Text */
+.welcome-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.welcome-text h2 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--white);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.03em;
+}
+
+.welcome-text p {
+  font-size: 1.15rem;
+  opacity: 0.95;
+  line-height: 1.7;
+  color: var(--white);
+}
+
+/* Login/Signup Form Side */
+.login-right,
+.signup-left {
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--white);
+}
+
+.login-header,
+.signup-header {
+  margin-bottom: 2.5rem;
+}
+
+.login-header h4,
+.signup-header h4 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-header p,
+.signup-header p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  margin-bottom: 0;
+}
+
+/* ========================================
+   Profile Page Styles
+   ======================================== */
+.profile-container {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.profile-header {
+  background: var(--primary-gradient);
+  padding: 3rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--white);
+}
+
+.profile-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  animation: rotate 25s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+  color: var(--primary-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.profile-header h4 {
+  color: var(--white);
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.75rem;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-body {
+  padding: 3rem;
+  background: linear-gradient(to bottom, var(--white) 0%, var(--bg-light) 100%);
+}
+
+/* ========================================
+   Form Elements
+   ======================================== */
+.form-group {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.form-label {
+  font-weight: 700;
+  color: var(--text-medium);
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-control {
+  width: 100%;
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--white);
+  font-weight: 500;
+}
+
+/* Form control with icon */
+.form-group .form-control {
+  padding-left: 52px;
+}
+
+.form-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  z-index: 2;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: transform 0.3s ease;
+}
+
+.form-group:hover .form-icon {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1),
+    0 8px 16px rgba(99, 102, 241, 0.08);
+  transform: translateY(-2px);
+}
+
+.form-control:readonly,
+.form-control:disabled {
+  background: var(--bg-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+  border-color: var(--border-color);
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Field Group (Two Column Layout) */
+.field-group,
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.btn-primary {
+  width: 100%;
+  padding: 16px 28px;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-gradient {
+  background: var(--primary-gradient);
+  border: none;
+  color: var(--white);
+  padding: 1rem 3rem;
+  border-radius: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.4);
+  color: var(--white);
+}
+
+.btn-outline-secondary,
+.btn-outline-custom {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--white), var(--white)) padding-box,
+    var(--primary-gradient) border-box;
+  color: var(--primary-color);
+  padding: 10px 26px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-outline-secondary::before,
+.btn-outline-custom::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-custom:hover {
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.25);
+}
+
+.btn-outline-secondary:hover::before,
+.btn-outline-custom:hover::before {
+  opacity: 1;
+}
+
+/* ========================================
+   Navbar
+   ======================================== */
+.navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  padding: 1.25rem 0;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.navbar .navbar-brand {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   Alerts
+   ======================================== */
+.alert {
+  border: none;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid transparent;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: var(--white);
+  border-left-color: #065f46;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: var(--white);
+  border-left-color: #991b1b;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: var(--white);
+  border-left-color: #1e40af;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: var(--white);
+  border-left-color: #92400e;
+}
+
+/* ========================================
+   Links
+   ======================================== */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-gradient);
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+.text-center a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.form-footer {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 2px solid var(--border-color);
+  text-align: center;
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+.mb-3 {
+  margin-bottom: 1rem;
+}
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-3 {
+  margin-top: 1rem;
+}
+.mt-4 {
+  margin-top: 1.5rem;
+}
+.mt-5 {
+  margin-top: 3rem;
+}
+.p-4 {
+  padding: 1.5rem;
+}
+.text-center {
+  text-align: center;
+}
+.w-100 {
+  width: 100%;
+}
+.bg-white {
+  background-color: var(--white);
+}
+
+/* ========================================
+   Scrollbar
+   ======================================== */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-gradient);
+  border-radius: 6px;
+  border: 2px solid var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+*:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ========================================
+   Responsive Design - Tablet
+   ======================================== */
+@media (max-width: 992px) {
+  .login-wrapper,
+  .signup-wrapper {
+    max-width: 700px;
+  }
+
+  .login-right,
+  .signup-left {
+    padding: 50px 40px;
+  }
+
+  .welcome-text h2 {
+    font-size: 2.25rem;
+  }
+
+  .profile-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* ========================================
+   Responsive Design - Mobile
+   ======================================== */
+@media (max-width: 768px) {
+  .login-wrapper,
+  .signup-wrapper {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    min-height: auto;
+  }
+
+  .login-left,
+  .signup-right {
+    display: none;
+  }
+
+  .login-right,
+  .signup-left {
+    padding: 40px 30px;
+  }
+
+  .login-header h4,
+  .signup-header h4 {
+    font-size: 1.875rem;
+  }
+
+  .profile-body {
+    padding: 2rem;
+  }
+
+  .field-group,
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .profile-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.35rem;
+  }
+
+  .card {
+    margin-top: 1rem !important;
+  }
+
+  .btn-primary,
+  .btn-outline-secondary {
+    width: 100%;
+  }
+
+  .navbar-brand {
+    font-size: 1.35rem;
+  }
+
+  .form-control {
+    font-size: 1rem;
+  }
+}
+
+/* ========================================
+   Responsive Design - Small Mobile
+   ======================================== */
+@media (max-width: 480px) {
+  .login-right,
+  .signup-left {
+    padding: 30px 20px;
+  }
+
+  .profile-body {
+    padding: 1.5rem;
+  }
+
+  .profile-avatar {
+    width: 90px;
+    height: 90px;
+    font-size: 2.25rem;
+  }
+
+  .welcome-text h2 {
+    font-size: 1.75rem;
+  }
+
+  .welcome-text p {
+    font-size: 1rem;
+  }
+}

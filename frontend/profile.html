@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Profile Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-light shadow-sm">
+      <div class="container">
+        <a class="navbar-brand">✨ Profile Dashboard</a>
+        <div>
+          <button id="btnLogout" class="btn btn-outline-custom">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container profile-container">
+      <div id="alertArea"></div>
+      <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-8">
+          <div class="profile-card">
+            <div class="profile-header">
+              <div class="profile-avatar" id="avatarInitials">?</div>
+              <h4 id="profileTitle">Welcome Back!</h4>
+            </div>
+
+            <div class="profile-body">
+              <form id="profileForm">
+                <div class="mb-4">
+                  <label class="form-label">👤 Full Name</label>
+                  <div class="input-group-icon">
+                    <input
+                      name="fullname"
+                      id="fullname"
+                      class="form-control"
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label">✉️ Email Address</label>
+                  <div class="input-group-icon">
+                    <input
+                      name="email"
+                      id="email"
+                      class="form-control"
+                      placeholder="your.email@example.com"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <div class="field-group mb-4">
+                  <div>
+                    <label class="form-label">📱 Phone Number</label>
+                    <input
+                      name="phone"
+                      id="phone"
+                      class="form-control"
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+
+                  <div>
+                    <label class="form-label">🎂 Date of Birth</label>
+                    <input
+                      name="dob"
+                      id="dob"
+                      type="date"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label">🎯 Age</label>
+                  <input
+                    name="age"
+                    id="age"
+                    type="number"
+                    class="form-control"
+                    placeholder="Calculated from DOB"
+                    readonly
+                  />
+                </div>
+
+                <div class="text-center">
+                  <button id="btnSave" type="submit" class="btn btn-gradient">
+                    💾 Save Changes
+                  </button>
+                </div>
+
+                <div class="form-footer">
+                  <p class="mb-0">
+                    Need another account?
+                    <a href="signup.html">Create New Account →</a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery + Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      function showAlert(msg, type = "success") {
+        $("#alertArea").html(`<div class="alert alert-${type}">${msg}</div>`);
+        setTimeout(() => $("#alertArea").html(""), 4000);
+      }
+
+      function calculateAge(dob) {
+        if (!dob) return "";
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age;
+      }
+
+      function updateAvatar(name) {
+        const initials = name
+          .split(" ")
+          .map((word) => word[0])
+          .join("")
+          .toUpperCase()
+          .substring(0, 2);
+        $("#avatarInitials").text(initials || "?");
+        $("#profileTitle").text(name || "Welcome Back!");
+      }
+
+      if (!getToken()) {
+        window.location.href = "login.html";
+      } else {
+        fetchProfile(
+          (data) => {
+            $("#fullname").val(data.fullname || "");
+            $("#email").val(data.email || "");
+            $("#phone").val(data.phone || "");
+            $("#dob").val(data.dob || "");
+            $("#age").val(data.age || calculateAge(data.dob));
+            updateAvatar(data.fullname || "User");
+          },
+          (err) => {
+            showAlert(err, "danger");
+            clearToken();
+            setTimeout(() => (window.location.href = "login.html"), 1000);
+          }
+        );
+      }
+
+      $("#fullname").on("input", function () {
+        updateAvatar($(this).val());
+      });
+
+      $("#dob").on("change", function () {
+        $("#age").val(calculateAge($(this).val()));
+      });
+
+      $("#profileForm").on("submit", (e) => {
+        e.preventDefault();
+        $("#btnSave").prop("disabled", true).html("⏳ Saving...");
+
+        const payload = {
+          fullname: $("#fullname").val(),
+          phone: $("#phone").val(),
+          dob: $("#dob").val(),
+          age: $("#age").val(),
+        };
+
+        updateProfile(
+          payload,
+          () => {
+            showAlert("✅ Profile updated successfully!");
+            $("#btnSave").prop("disabled", false).html("💾 Save Changes");
+          },
+          (err) => {
+            showAlert(err, "danger");
+            $("#btnSave").prop("disabled", false).html("💾 Save Changes");
+          }
+        );
+      });
+
+      $("#btnLogout").on("click", () => {
+        clearToken();
+        window.location.href = "login.html";
+      });
+    </script>
+  </body>
+</html>
